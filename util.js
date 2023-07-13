@@ -2,10 +2,11 @@ export const DB_PROPERTIES = {
   NAME: 'name', // 用于log
   // movie
   POSTER: '海报',
-  MOVIE_TITLE: '电影/电视剧/番组',
+  MOVIE_TITLE: '标题',
   YEAR: '上映年份',
   DIRECTORS: '导演',
   ACTORS: '主演',
+  REGION: '制片国家/地区', 
   GENRE: '类型', // movie, game, drama
   IMDB_LINK: 'IMDb 链接',
   // music
@@ -27,7 +28,7 @@ export const DB_PROPERTIES = {
   RATING: '个人评分', // common
   RATING_DATE: '打分日期', // common
   COMMENTS: '我的短评', // common
-  ITEM_LINK: '条目链接', // common
+  ITEM_LINK: '豆瓣链接', // common
 };
 
 export const PropertyType = {
@@ -44,6 +45,7 @@ export const PropertyType = {
   YEAR: 'number',
   DIRECTORS: 'rich_text',
   ACTORS: 'rich_text',
+  REGION: 'rich_text',
   GENRE: 'multi_select',
   ITEM_LINK: 'url',
   IMDB_LINK: 'url',

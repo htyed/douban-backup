@@ -1,3 +1,8 @@
+/*
+豆瓣→Notion
+0 5 * * * sync-rss.js
+*/
+const $ = new Env('豆瓣→Notion');
 import dotenv from 'dotenv';
 import { Client } from '@notionhq/client';
 import dayjs from 'dayjs';
