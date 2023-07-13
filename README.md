@@ -1,3 +1,5 @@
+> 这个分支只包含notion，支持青龙面板信息推送
+
 # README
 
 首先感谢大佬[bambooom](https://github.com/bambooom)的付出，然后在这里记录一下自己的实践过程。
