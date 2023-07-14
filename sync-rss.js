@@ -384,6 +384,12 @@ async function fetchItem(link, category) {
       .slice(0, 5)
       .map((i) => i.textContent)
       .join(' / ');
+ //new
+    var guo = dom.window.document.querySelectorAll('#info span.pl');
+    for(var i=3;i<9;i++)
+    {if (guo[i].innerHTML == "制片国家/地区:" ){var diqu = guo[i].nextSibling.textContent;}} 
+    itemData[DB_PROPERTIES.REGION] = diqu;
+ //new end
     itemData[DB_PROPERTIES.GENRE] = [
       ...dom.window.document.querySelectorAll('#info [property="v:genre"]'),
     ].map((i) => i.textContent); // array
