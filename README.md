@@ -35,10 +35,11 @@
 在文档页面先生成一个 Token，然后给 repo 添加一个 secret 叫 `NEODB_API_TOKEN`
 
 > 青龙面板配置
-> 1、正常拉取库  ql repo https://ghproxy.com/https://github.com/htyed/douban-backup.git "sync-rss" "" "db-notes-img-dl|export-note.user|export.user|package|package-lock|sendNotify|update-notion|util" "main" "js|json"
+> 1、正常拉取库  ql repo https://ghproxy.com/https://github.com/htyed/douban-backup.git "sync-rss" "" "db-notes-img-dl|export-note.user|export.user|package|package-lock|update-notion|util" "main" "js|json"
 > 2、cd到项目文件夹（需要在容器的终端机里执行命令）
 > 3、npm install
-> 4、环境变量里添加好secret
+> 4、环境变量里添加好secret 
+> 5、通知类：目前仅支持Gotify通知 添加环境变量 "GOTIFY_URL|GOTIFY_TOKEN_DB"
 
 ## TODO
 
