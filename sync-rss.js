@@ -10,6 +10,11 @@ import got from 'got';
 import { JSDOM } from 'jsdom';
 import Parser from 'rss-parser';
 import { DB_PROPERTIES, PropertyType, sleep } from './util.js';
+import axios from 'axios';
+var message = [];
+let GOTIFY_URL = process.env.GOTIFY_URL;
+let GOTIFY_TOKEN = process.env.GOTIFY_TOKEN_DB;
+let GOTIFY_PRIORITY = 0;
 
 dotenv.config();
 const parser = new Parser();
@@ -145,6 +150,8 @@ async function main() {
     process.exit(1);
   } else {
     console.log('All feeds are handled.');
+    // gotifyNotify(`豆瓣→Notion`,message.join('\n'));
+    if (message == `没有需要同步的新内容,快到豆瓣上记录吧~`) {}else{gotifyNotify(`豆瓣→Notion`,message.join('\n'));};
   }
 };
 
@@ -190,6 +197,7 @@ async function handleFeedNeodb(item) {
 
 async function markItemNeodb(neodbItem, item) {
   console.log('Going to mark on NeoDB: ', `${neodbItem.title}[${item.link}]`);
+  message.push(`在NeoDB上标记 →${neodbItem.title}← [${item.link}]`);
   try {
     await got.post(`https://neodb.social/api/me/shelf/item/${neodbItem.uuid}`, {
       headers: {
@@ -257,6 +265,8 @@ async function handleFeedNotion(categorizedFeeds, category) {
   });
 
   console.log(`There are total ${newFeeds.length} new ${category} item(s) need to insert.`);
+  if(newFeeds.length!=0){ message.push(`同步至Notion ${newFeeds.length}个项目:`);}
+  else{message.push(`没有需要同步的新内容,快到豆瓣上记录吧~`);}
 
   let failedItems = [];
 
@@ -646,6 +656,7 @@ async function addToNotion(itemData, category) {
     itemData[DB_PROPERTIES.RATING_DATE],
     itemData[DB_PROPERTIES.NAME]
   );
+  message.push(`    ${itemData[DB_PROPERTIES.NAME]}`);
   let result = true;
   try {
     let properties = {};
@@ -715,4 +726,27 @@ async function addToNotion(itemData, category) {
   }
 
   return result;
+}
+
+async function gotifyNotify(text, desp) {
+  if (GOTIFY_URL && GOTIFY_TOKEN) {
+    const url = `${GOTIFY_URL}/message?token=${GOTIFY_TOKEN}`;
+    const data = `title=${encodeURIComponent(text)}&message=${encodeURIComponent(desp)}&priority=${GOTIFY_PRIORITY}`;
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    };
+
+    try {
+      const response = await axios.post(url, data, { headers });
+      const responseData = response.data;
+      if (responseData.id) {
+        console.log('gotify发送通知消息成功🎉\n');
+      } else {
+        console.log(`${responseData.message}\n`);
+      }
+    } catch (error) {
+      console.log('gotify发送通知调用API失败！！\n');
+      console.log(error);
+    }
+  }
 }
