@@ -19,7 +19,7 @@
 - [game template](https://bambooo.notion.site/0fcb63ccfc65455b9349b29685690b71?v=5fc35837865640fe8e008ef80961d87f)
 - [drama templa](https://bambooo.notion.site/29233844d4e34a9eb6fd48fb0a7b1598?v=8e9681e173204853b3df0d8c10f0e549)
 
-新增：在电影页面增加一列 制片国家/地区，属性选择文本
+> 变化：在电影页面增加一列 制片国家/地区，属性选择文本 | 电影名改为标题
 
 ## 3、用脚本补全信息
 
@@ -32,43 +32,67 @@
 
 ## 5、NeoDB 配置（新）
 
-在[文档页面](https://neodb.social/developer/)先生成一个 Token，然后给 repo 添加一个 secret 叫 `NEODB_API_TOKEN`
+在 [文档页面](https://neodb.social/developer/) 生成一个 Token，然后给 repo 添加一个 secret 叫 `NEODB_API_TOKEN`
 
-## 6、DB 图片问题
+## 6、解决DB 图片加载不出来（新）
 
-解决图片加载不出来的问题，用index.php部署一个网页，绑定一个域名/端口
+- 方案一：用 index.php 文件 部署一个网页，绑定域名/端口。
 
-## 7、青龙面板配置
-1.  正常拉取库  ql repo https://ghproxy.com/https://github.com/htyed/douban-backup.git "sync-rss" "" "db-notes-img-dl|export-note.user|export.user|package|package-lock|update-notion|util" "main" "js|json"
+>一旦网页没了，图片就全加载不出来了。若保证网页长期在线，也不是不行。
 
-2.  cd到项目文件夹（需要在容器的终端机里执行命令）
-3.  npm install
-4.  环境变量里添加好secret 
-5.  通知：目前只支持Gotify通知。
+- 方案二：定期手动上传所有图片到notion。
+>最稳定，就是有点麻烦
 
-## 8、青龙面板环境变量汇总
+- 方案三：保持现有链接不变，期待DB官方取消防盗链（目前不可行）
+>够呛呀
+
+- 方案四：直接将图片上传到Notion图床（目前不可行）
+>找了很久如何直接上传图片到notion的方法，没找到，期待Notion官方开放上传的API
+
+## 7、青龙面板配置（新）
+1. 青龙拉库 
+
+   ```
+   ql repo https://ghproxy.com/https://github.com/htyed/douban-backup.git "sync-rss" "" "db-notes-img-dl|export-note.user|export.user|package|package-lock|update-notion|util" "main" "js|json"
+   ```
+
+2. 在青龙docker容器的终端机里执行命令
+
+   ```
+   cd 项目目录
+   npm install
+   ```
+
+3. 环境变量里添加对应变量
+
+## 8、青龙面板环境变量汇总（新）
 
 | 环境变量                         | 值                     | 备注          |
 | -------------------------------- | ---------------------- | ------------- |
 | DOUBAN_USER_ID                   | xxxxxxx                | 豆瓣 用户名   |
-| NOTION_TOKEN                     | secret_xxxxxxxxxxxxxxx | Notion        |
+| NOTION_TOKEN                     | secret_xxxxxxxxxxxxxxx | Notion token  |
+| NEODB_API_TOKEN                  | xxxxxxxxxxxxxxx        | NeoDB token   |
 | NOTION_BOOK_DATABASE_ID（可选）  | xxxxxxxxxxxxxxx        | 图书          |
 | NOTION_MOVIE_DATABASE_ID（可选） | xxxxxxxxxxxxxxx        | 电影          |
 | NOTION_GAME_DATABASE_ID（可选）  | xxxxxxxxxxxxxxx        | 游戏          |
 | NOTION_MUSIC_DATABASE_ID（可选） | xxxxxxxxxxxxxxx        | 音乐          |
 | NOTION_DRAMA_DATABASE_ID（可选） | xxxxxxxxxxxxxxx        | 戏剧          |
-| GOTIFY_URL（可选）               | https://xxx.xxx.xxx    | GOTIFY 地址   |
-| GOTIFY_TOKEN_DB（可选）          | xxxxxxxxxxxxxxx        | GOTIFY        |
+| GOTIFY_URL（可选）               | https://xxx.xxx.xxx    | Gotify 地址   |
+| GOTIFY_TOKEN_DB（可选）          | xxxxxxxxxxxxxxx        | Gotify token  |
 | PROXY_DB（可选）                 | https://xxx.xxx.xxx/   | 图片代理 地址 |
+
+
 
 ## TODO
 
-- [x] 支持消息推送
+- [x] 支持消息推送（目前只支持 Gotify 通知）
 - [ ] 改进文件，无需执行额外的命令行操作
+
+
 
 ## 同类项目
 
-Douban-backup：https://zhuzi.dev/2021/06/05/douban-backup-sync-notion/
+Douban-backup（原项目）教程：https://zhuzi.dev/2021/06/05/douban-backup-sync-notion
 Notion_sync_data：https://github.com/Qliangw/notion_sync_data
 Notion API × 豆瓣电影/图书：https://djdjs.notion.site/djdjs/Notion-API-7fe0ab77c9ba49d1bb1bbd7963a502dc
 Notion Transfer：https://github.com/lccurious/notion-transfer
