@@ -1,12 +1,15 @@
->这个分支包含 Notion 和 NeoDB，支持青龙面板
+>感谢大佬[bambooom](https://github.com/bambooom)的付出，原项目链接：https://github.com/bambooom/douban-backup
+>
+>在这里记录一下自己在青龙面板实践整个项目的过程，根据自己的习惯进行了一小部分修改
+>
+>这个分支是最新版，包含 Notion 和 NeoDB，与原项目同步更新。。。
+>另一个分支只包含Notion，青龙面板消息通知更全面，应该不会更新了，留个档备份~
 
 # README
 
-首先感谢大佬[bambooom](https://github.com/bambooom)的付出，然后在这里记录一下自己的实践过程。
-
 ## 1、油猴脚本导出csv
 
-安装[油猴脚本](https://greasyfork.org/zh-CN/scripts/420999-%E8%B1%86%E7%93%A3%E8%AF%BB%E4%B9%A6-%E7%94%B5%E5%BD%B1-%E9%9F%B3%E4%B9%90-%E6%B8%B8%E6%88%8F-%E8%88%9E%E5%8F%B0%E5%89%A7%E5%AF%BC%E5%87%BA%E5%B7%A5%E5%85%B7)→导出csv
+安装[油猴脚本](https://greasyfork.org/zh-CN/scripts/420999-%E8%B1%86%E7%93%A3%E8%AF%BB%E4%B9%A6-%E7%94%B5%E5%BD%B1-%E9%9F%B3%E4%B9%90-%E6%B8%B8%E6%88%8F-%E8%88%9E%E5%8F%B0%E5%89%A7%E5%AF%BC%E5%87%BA%E5%B7%A5%E5%85%B7)→导出豆瓣csv
 
 ## 2、保存Notion模板副本，并导入csv
 
@@ -26,35 +29,46 @@
 
 使用 `sync-rss.js` 脚本获取 RSS 数据，对新加入的条目进行抓取信息，处理后添加到对应的 notion database 中即可。
 
-定时运行可以用 GitHub Actions 跑 [scheduled workflow](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#schedule)、青龙面板跑定时任务、等等。
 
-## 5、NeoDB 配置
+## 5、NeoDB 配置（新）
 
->[NeoDB 文档](https://neodb.social/developer/)
-
-在文档页面先生成一个 Token，然后给 repo 添加一个 secret 叫 `NEODB_API_TOKEN`
+在[文档页面](https://neodb.social/developer/)先生成一个 Token，然后给 repo 添加一个 secret 叫 `NEODB_API_TOKEN`
 
 ## 6、DB 图片问题
-图片可能加载不出来，部署网页就一个文件 index.php
-青龙里添加环境变量 PROXY_DB (例如：https://xxx.xxx.xxx/)
 
-> 青龙面板配置
-> 1、正常拉取库  ql repo https://ghproxy.com/https://github.com/htyed/douban-backup.git "sync-rss" "" "db-notes-img-dl|export-note.user|export.user|package|package-lock|update-notion|util" "main" "js|json"
-> 2、cd到项目文件夹（需要在容器的终端机里执行命令）
-> 3、npm install
-> 4、环境变量里添加好secret 
-> 5、通知类：目前仅支持Gotify通知 添加环境变量 "GOTIFY_URL|GOTIFY_TOKEN_DB"
+解决图片加载不出来的问题，用index.php部署一个网页，绑定一个域名/端口
+
+## 7、青龙面板配置
+1.  正常拉取库  ql repo https://ghproxy.com/https://github.com/htyed/douban-backup.git "sync-rss" "" "db-notes-img-dl|export-note.user|export.user|package|package-lock|update-notion|util" "main" "js|json"
+
+2.  cd到项目文件夹（需要在容器的终端机里执行命令）
+3.  npm install
+4.  环境变量里添加好secret 
+5.  通知：目前只支持Gotify通知。
+
+## 8、青龙面板环境变量汇总
+
+| 环境变量                         | 值                     | 备注          |
+| -------------------------------- | ---------------------- | ------------- |
+| DOUBAN_USER_ID                   | xxxxxxx                | 豆瓣 用户名   |
+| NOTION_TOKEN                     | secret_xxxxxxxxxxxxxxx | Notion        |
+| NOTION_BOOK_DATABASE_ID（可选）  | xxxxxxxxxxxxxxx        | 图书          |
+| NOTION_MOVIE_DATABASE_ID（可选） | xxxxxxxxxxxxxxx        | 电影          |
+| NOTION_GAME_DATABASE_ID（可选）  | xxxxxxxxxxxxxxx        | 游戏          |
+| NOTION_MUSIC_DATABASE_ID（可选） | xxxxxxxxxxxxxxx        | 音乐          |
+| NOTION_DRAMA_DATABASE_ID（可选） | xxxxxxxxxxxxxxx        | 戏剧          |
+| GOTIFY_URL（可选）               | https://xxx.xxx.xxx    | GOTIFY 地址   |
+| GOTIFY_TOKEN_DB（可选）          | xxxxxxxxxxxxxxx        | GOTIFY        |
+| PROXY_DB（可选）                 | https://xxx.xxx.xxx/   | 图片代理 地址 |
 
 ## TODO
 
+- [x] 支持消息推送
 - [ ] 改进文件，无需执行额外的命令行操作
-
-- [ ] 增加消息推送
 
 ## 同类项目
 
-Douban-backup（本项目大佬教程）：https://zhuzi.dev/2021/06/05/douban-backup-sync-notion/
-
+Douban-backup：https://zhuzi.dev/2021/06/05/douban-backup-sync-notion/
 Notion_sync_data：https://github.com/Qliangw/notion_sync_data
-
 Notion API × 豆瓣电影/图书：https://djdjs.notion.site/djdjs/Notion-API-7fe0ab77c9ba49d1bb1bbd7963a502dc
+Notion Transfer：https://github.com/lccurious/notion-transfer
