@@ -11,7 +11,9 @@ import { JSDOM } from 'jsdom';
 import Parser from 'rss-parser';
 import { DB_PROPERTIES, PropertyType, sleep } from './util.js';
 import axios from 'axios';
+
 var message = [];
+let PROXY_DB = process.env.PROXY_DB;
 let GOTIFY_URL = process.env.GOTIFY_URL;
 let GOTIFY_TOKEN = process.env.GOTIFY_TOKEN_DB;
 let GOTIFY_PRIORITY = 0;
@@ -385,6 +387,9 @@ async function fetchItem(link, category) {
       itemData[DB_PROPERTIES.POSTER] = img?.src
         .trim()
         .replace(/\.webp$/, '.jpg');
+        const imgnum = itemData[DB_PROPERTIES.POSTER].match(/p\d*.jpg/);
+        itemData[DB_PROPERTIES.POSTER] = PROXY_DB + encodeURIComponent(`?p=${imgnum}`);
+        console.log(itemData[DB_PROPERTIES.POSTER]);
     }
     itemData[DB_PROPERTIES.DIRECTORS] =
       dom.window.document.querySelector('#info .attrs').textContent;
