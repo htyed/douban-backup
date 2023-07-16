@@ -34,6 +34,10 @@
 
 在文档页面先生成一个 Token，然后给 repo 添加一个 secret 叫 `NEODB_API_TOKEN`
 
+## 6、DB 图片问题
+图片可能加载不出来，部署网页就一个文件 index.php
+青龙里添加环境变量 PROXY_DB (例如：https://xxx.xxx.xxx/)
+
 > 青龙面板配置
 > 1、正常拉取库  ql repo https://ghproxy.com/https://github.com/htyed/douban-backup.git "sync-rss" "" "db-notes-img-dl|export-note.user|export.user|package|package-lock|update-notion|util" "main" "js|json"
 > 2、cd到项目文件夹（需要在容器的终端机里执行命令）

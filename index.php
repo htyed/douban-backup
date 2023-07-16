@@ -1,5 +1,6 @@
 <?php
-  // 获取传递的链接
+  // 获取传递的链接，为什么传递的链接不用原链接
+  // notion传的链接字符数要<=100，完整链接会超字符
   $picnum = $_GET['p'];
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, 'https://img1.doubanio.com/view/photo/s_ratio_poster/public/' . $picnum);
