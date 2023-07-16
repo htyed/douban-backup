@@ -387,8 +387,10 @@ async function fetchItem(link, category) {
       itemData[DB_PROPERTIES.POSTER] = img?.src
         .trim()
         .replace(/\.webp$/, '.jpg');
+      if(PROXY_DB){
         const imgnum = itemData[DB_PROPERTIES.POSTER].match(/p\d*.jpg/);
         itemData[DB_PROPERTIES.POSTER] = PROXY_DB + encodeURIComponent(`?p=${imgnum}`);
+      }
         console.log(itemData[DB_PROPERTIES.POSTER]);
     }
     itemData[DB_PROPERTIES.DIRECTORS] =
