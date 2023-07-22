@@ -17,6 +17,7 @@ let PROXY_DB = process.env.PROXY_DB;
 let GOTIFY_URL = process.env.GOTIFY_URL;
 let GOTIFY_TOKEN = process.env.GOTIFY_TOKEN_DB;
 let GOTIFY_PRIORITY = 0;
+let emojicategory = '';
 
 dotenv.config();
 const parser = new Parser();
@@ -42,6 +43,7 @@ const CATEGORY = {
 };
 const EMOJI = {
   movie: '🎞',
+  tv: '📺',
   music: '🎶',
   book: '📖',
   game: '🕹',
@@ -371,7 +373,7 @@ async function fetchItem(link, category) {
   const itemData = {};
   const response = await got(link);
   const dom = new JSDOM(response.body);
-
+  emojicategory = category;
   // movie item page
   if (category === CATEGORY.movie) {
     const title = dom.window.document
@@ -404,7 +406,8 @@ async function fetchItem(link, category) {
  //new
     var guo = dom.window.document.querySelectorAll('#info span.pl');
     for(var i=3;i<9;i++)
-    {if (guo[i].innerHTML == "制片国家/地区:" ){var diqu = guo[i].nextSibling.textContent;}} 
+    {if (guo[i].innerHTML == "制片国家/地区:" ){var diqu = guo[i].nextSibling.textContent;}
+    if (guo[i].innerHTML == "集数:" ){emojicategory = 'tv'}} 
     itemData[DB_PROPERTIES.REGION] = diqu;
  //new end
     itemData[DB_PROPERTIES.GENRE] = [
@@ -699,7 +702,7 @@ async function addToNotion(itemData, category) {
       },
       icon: {
         type: 'emoji',
-        emoji: EMOJI[category],
+        emoji: EMOJI[emojicategory],
       },
       // fill in properties by the format: https://developers.notion.com/reference/page#page-property-value
       properties,
