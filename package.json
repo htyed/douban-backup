@@ -20,9 +20,9 @@
     "node": ">=16"
   },
   "dependencies": {
-    "@notionhq/client": "^2.2.11",
+    "@notionhq/client": "^2.2.13",
     "axios": "^1.4.0",
-    "dayjs": "^1.11.9",
+    "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
     "fast-csv": "^4.3.6",
     "got": "^13.0.0",
